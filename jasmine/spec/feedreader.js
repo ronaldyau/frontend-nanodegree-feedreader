@@ -34,41 +34,37 @@ $(function() {
             var body = $('body'), 
                 menuIcon = $('.menu-icon-link');
             menuIcon.click();
-            expect(body.hasClass('menu-hidden')).toBe(false);
+            expect(body.hasClass('menu-hidden')).toBeFalsy();
             menuIcon.click();
-            expect(body.hasClass('menu-hidden')).toBe(true);
+            expect(body.hasClass('menu-hidden')).toBeTruthy();
         });
     });
 
     describe('Initial Entries', function() {
         beforeEach(function(done){
-            loadFeed(0, function() {
-                done();
-            });
+            loadFeed(0, done);
         });
 
         it('exist in the feed container when the loadFeed function is called and completes its work', function() {
-            var entries = $('.entry');
-            expect(entries.length).not.toBe(0);
+            var entries = $('.feed .entry');
+            expect(entries.length).toBeGreaterThan(0);
         });
     });
 
     describe('New Feed Selection', function() {
-        var entries, originalEntry, newFeedEntry;
+        var firstFeed, secondFeed;
         beforeEach(function(done) {
             loadFeed(0, function() {
-                entries = $('.entry');
-                originalEntry = entries[0];
+                firstFeed = $('.feed').text();
                 loadFeed(1, function() {
-                    entries = $('.entry');
-                    newFeedEntry = entries[0];
+                    secondFeed = $('.feed').text();
                     done();
                 });
             });
         });
 
         it('the content actually changes', function() {
-            expect(originalEntry.textContent).not.toBe(newFeedEntry.textContent);
+            expect(firstFeed).not.toBe(secondFeed);
         });
     });
 }());
